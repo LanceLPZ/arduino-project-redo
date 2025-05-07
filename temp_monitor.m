@@ -1,5 +1,6 @@
 function temp_monitor(a)
 
+
 therm = 'A0';
 red = 'D2';
 yellow = 'D3';
@@ -20,6 +21,7 @@ xlabel('Time (s)');
 ylabel('Temperature (°C)');
 title('Live Temperature Plot');
 grid on;
+startTime = tic;
 
 voltage = readVoltage(a,therm);
 temperature = (voltage-voltagezero)/temperaturecoefficient;
@@ -29,7 +31,6 @@ addpoints(graph, 0, temperature);
 drawnow;
 
 while true
-
     voltage = readVoltage(a, therm);
     temperature = (voltage - voltagezero) / temperaturecoefficient;
     currentTime = toc(startTime);
@@ -50,15 +51,11 @@ elseif temperature > 24
    
     redblink = ~redblink;
     writeDigitalPin(a, red, redblink);
-    writeDigitalPin(a, yellow, 0)
-    writeDigitalPin(a, green, 0)
 
 elseif temperature < 18
 
     yellowblink = ~yellowblink;
     writeDigitalPin(a, yellow, yellowblink);
-    writeDigitalPin(a, red, 0)
-    writeDigitalPin(a, green, 0)
 end
 
 pause(1);
