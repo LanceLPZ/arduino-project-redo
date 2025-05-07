@@ -66,5 +66,8 @@ pause(0.5);
 
 end
 
+  writeDigitalPin(a, red, 0)
+  writeDigitalPin(a, yellow, 0)
+  writeDigitalPin(a, green,0)
 
 end
