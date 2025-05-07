@@ -20,7 +20,6 @@ xlabel('Time (s)');
 ylabel('Temperature (°C)');
 title('Live Temperature Plot');
 grid on;
-startTime = tic;
 
 voltage = readVoltage(a,therm);
 temperature = (voltage-voltagezero)/temperaturecoefficient;
@@ -30,8 +29,6 @@ addpoints(graph, 0, temperature);
 drawnow;
 
 while true
-
-    delay = tic
 
     voltage = readVoltage(a, therm);
     temperature = (voltage - voltagezero) / temperaturecoefficient;
@@ -64,8 +61,7 @@ elseif temperature < 18
     writeDigitalPin(a, green, 0)
 end
 
-elapse = toc(delay);
-pause = (1 - elapse);
+pause(1);
 
 
 end
