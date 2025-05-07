@@ -30,6 +30,9 @@ addpoints(graph, 0, temperature);
 drawnow;
 
 while true
+
+    delay = tic
+
     voltage = readVoltage(a, therm);
     temperature = (voltage - voltagezero) / temperaturecoefficient;
     currentTime = toc(startTime);
@@ -39,10 +42,6 @@ while true
 
     addpoints(graph, currentTime, temperature);
     drawnow limitrate;
-
-    writeDigitalPin(a, red, 0)
-    writeDigitalPin(a, yellow, 0)
-    writeDigitalPin(a, green,0)
 
 if temperature >= 18 && temperature <= 24
 
@@ -54,20 +53,21 @@ elseif temperature > 24
    
     redblink = ~redblink;
     writeDigitalPin(a, red, redblink);
+    writeDigitalPin(a, yellow, 0)
+    writeDigitalPin(a, green, 0)
 
 elseif temperature < 18
 
     yellowblink = ~yellowblink;
     writeDigitalPin(a, yellow, yellowblink);
+    writeDigitalPin(a, red, 0)
+    writeDigitalPin(a, green, 0)
 end
 
-pause(0.5);
+elapse = toc(delay);
+pause = (1 - elapse);
 
 
 end
-
-  writeDigitalPin(a, red, 0)
-  writeDigitalPin(a, yellow, 0)
-  writeDigitalPin(a, green,0)
 
 end
