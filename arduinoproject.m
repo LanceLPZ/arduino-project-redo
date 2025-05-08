@@ -2,6 +2,9 @@
 %efyll5@nottingham.ac.uk
 clear
 a = arduino()
+red = 'D4';
+yellow = 'D3';
+green = 'D2';
 
 writeDigitalPin(a, green, 0)
 writeDigitalPin(a, yellow, 0)
