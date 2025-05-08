@@ -2,14 +2,13 @@ function temp_monitor(a)
 
 
 therm = 'A0';
-red = 'D2';
+red = 'D4';
 yellow = 'D3';
-green = 'D4';
+green = 'D2';
 
 voltagezero = 0.5;       
 temperaturecoefficient = 0.01; 
 
-results = [];
 timegraph = [];
 index = 1;
 redblink = 0;
