@@ -3,6 +3,9 @@
 clear
 a = arduino()
 
+writeDigitalPin(a, green, 0)
+writeDigitalPin(a, yellow, 0)
+writeDigitalPin(a, red, 0)
 %% PRELIMINARY TASK - ARDUINO AND GIT INSTALLATION [10 MARKS]
 
  
