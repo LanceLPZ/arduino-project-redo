@@ -1,106 +1,99 @@
 %Lance Lopez
 %efyll5@nottingham.ac.uk
-clear
-a = arduino()
-red = 'D4';
-yellow = 'D3';
-green = 'D2';
 
-writeDigitalPin(a, green, 0)
-writeDigitalPin(a, yellow, 0)
-writeDigitalPin(a, red, 0)
 %% PRELIMINARY TASK - ARDUINO AND GIT INSTALLATION [10 MARKS]
 
- 
+ clear %clears all variables 
+a = arduino() %allows matlab to save the arduino as a variable
+clc %clears the command windiow
 
-clc
-%----------ASSIGNING VARIABLE TO ARDUINO----------
-%-----------------TURNING LED ON------------------
 
-for i = 1:5
-    writeDigitalPin(a, 'D2', 1);  % LED ON
-    pause(0.5);
-    writeDigitalPin(a, 'D2', 0);  % LED OFF
-    pause(0.5);
+%-----------------TURNING LED ON AND OFF------------------
+
+for repeat = 1:5 % starts a loop that repeats 5 times
+    writeDigitalPin(a, 'D2', 1);  % turns the LED on , D2 is the connection to the input
+    pause(0.5); % waits 0.5 seconds
+    writeDigitalPin(a, 'D2', 0);  % turns the LED off
+    pause(0.5); % wats 0.5 seconds
 end
-
-
-
-
 
 
 %% TASK 1 - READ TEMPERATURE DATA, PLOT, AND WRITE TO A LOG FILE [20 MARKS]
 
-clc
-%------- Setup Arduino and sensor -------
-     
-analoguechannel = 'A0';                    
-duration = 600;                       
-timeinterval = 1;                
-totalrepeats = duration / timeinterval;
-voltagezero = 0.5;       
-temperaturecoefficient = 0.01;      
-%------- Initialize data arrays -------
-voltages = zeros(1, totalrepeats);
-temperatures = zeros(1, totalrepeats);
+clear % clears all variables 
+a = arduino() % allows matlab to save the arduino as a variable
+clc % clears the command windiow
 
-%------- Data acquisition loop -------
-for i = 1:totalrepeats
-    voltages(i) = readVoltage(a, analoguechannel);
-    temperatures(i) = (voltages(i) - voltagezero) / temperaturecoefficient;
+
+%-------CREATING VARIABLES-------
+     
+analoguechannel = 'A0'; % sets the analogue input channel a variable                   
+duration = 600; % total time saved as a variable duration                      
+timeinterval = 1; %saved as a variable
+totalrepeats = duration / timeinterval; % equation divides the two variables to find the total repeats
+voltagezero = 0.5; % it is the voltage at 0 degrees
+temperaturecoefficient = 0.01; %0.01 means 10mv per degree
+
+
+%-------CREATING THE ARRAYS -------
+
+voltages = zeros(1, totalrepeats); % creates an array that stores the voltage
+temperatures = zeros(1, totalrepeats);% crea tes an array that stores the temperature
+
+
+%-------CREATING THE DATA AQUISITION LOOP-------
+for i = 1:totalrepeats % starts a loop that repeats depending on the number of repeats
+    voltages(i) = readVoltage(a, analoguechannel); %this allows matalb to read the voltage from the sensor
+    temperatures(i) = (voltages(i) - voltagezero) / temperaturecoefficient; %this converts the voltage into temperature
     pause(timeinterval);  % Wait for the next reading
 end
 
-%------- Statistical calculations -------
-minTemp = min(temperatures);
-maxTemp = max(temperatures);
-avgTemp = mean(temperatures);
 
-%------- Display results -------
-fprintf('\n--- Summary ---\n');
+%-------SHOWING RESULTS-------
+minTemp = min(temperatures); %shows the minimum temperature
+maxTemp = max(temperatures); %shows the maximum temperature
+avgTemp = mean(temperatures);%shows the mean temperature
+
 fprintf('Minimum Temperature: %.2f °C\n', minTemp);
 fprintf('Maximum Temperature: %.2f °C\n', maxTemp);
 fprintf('Average Temperature: %.2f °C\n', avgTemp);
 
-%------- Create time array for plotting -------
-time = 0:timeinterval:duration-timeinterval;  % Time from 0 to duration
 
-%------- Plot temperature vs time -------
-figure;  % Create new figure window
-plot(time, temperatures, 'b', 'LineWidth', 1.5); % Plot with blue line and set line width
-xlabel('Time (seconds)');      % x-axis label (time)
-ylabel('Temperature (°C)');    % y-axis label (temperature)
-title('Temperature vs Time');  % Title of the plot
-grid on;                      % Enable grid for easier reading
+%-------PLOTTING TIME AGAINST TEMPERATURE-------
+
+time = 0:timeinterval:duration-timeinterval;  % this gives the time up to the duration
+figure;  % this will create a new window
+plot(time, temperatures, 'b', 'LineWidth', 1.5); % plots the temperature against the time
+xlabel('Time (seconds)');      % labels the x axis (time)
+ylabel('Temperature (°C)');    % labels the y axis(temperature)
+title('Temperature vs Time');  % labels the title of the graph
+grid on;                      % creates a grid in the background
 
 
-% Number of minute intervals (600s / 60s = 10 readings)
-numberofpoints = floor((duration - 1)/ 60);
+%----------CREATING A WAY TO PLACE TABLE----------
 
-% Preallocate array to hold temperatures every minute
-minuteTemps = zeros(1, numberofpoints);
-
-% Extract temperature at every 60-second interval
+numberofpoints = floor((duration - 1)/ 60); %floor enables you to take a number of values but to the nearest integer 
+temppermin = zeros(1, numberofpoints);
 for i = 1:numberofpoints
     timepoint = i * 60;  % Time in seconds (60, 120, ..., 600)
     index = timepoint / timeinterval + 1;  % Convert to index
-    minuteTemps(i) = temperatures(index);
+    temppermin(i) = temperatures(index);
 end
 
-
-% Optional: display result
-disp('Temperatures at each minute:');
-disp(minuteTemps);
 
 
 
 
 %% TASK 2 - LED TEMPERATURE MONITORING DEVICE IMPLEMENTATION [25 MARKS]
-
+clear
+a = arduino()
+clc
 temp_monitor(a);
 
 %% TASK 3 - ALGORITHMS – TEMPERATURE PREDICTION [25 MARKS]
-
+clear
+a = arduino()
+clc
 temp_prediction(a);
 
 %% TASK 4 - REFLECTIVE STATEMENT [5 MARKS]
