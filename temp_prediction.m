@@ -1,4 +1,4 @@
-function temp_prediction(a)
+ function temp_prediction(a)
 
 therm = 'A0';
 red = 'D4';

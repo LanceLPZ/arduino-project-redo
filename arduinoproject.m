@@ -32,8 +32,8 @@ duration = 600; % total time saved as a variable duration
 timeinterval = 1; %saved as a variable
 totalrepeats = duration / timeinterval; % equation divides the two variables to find the total repeats
 voltagezero = 0.5; % it is the voltage at 0 degrees
-temperaturecoefficient = 0.01; %0.01 means 10mv per degree
-
+temperaturecoefficient = 0.01; % 0.01 means 10mv per degree
+ 
 
 %-------CREATING THE ARRAYS -------
 
