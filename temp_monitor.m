@@ -24,47 +24,47 @@ startTime = tic; % used in order to measure elapsed time
 
 voltage = readVoltage(a,therm); % reads the voltage from sensor
 temperature = (voltage-voltagezero)/temperaturecoefficient; %converts voltage into temp
-results(index) = temperature;
+results(index) = temperature; % stores the temperature
 timegraph(index) = 0; % Time = 0 at start
-addpoints(graph, 0, temperature);
-drawnow;
+addpoints(graph, 0, temperature); % plots the points while live
+drawnow; %updates the figure to allow continuous plotting
 
-while true
-    voltage = readVoltage(a, therm);
-    temperature = (voltage - voltagezero) / temperaturecoefficient;
-    currentTime = toc(startTime);
-    results(index) = temperature;
-    timegraph(index) = currentTime;
-    index = index + 1;
+while true %while loop that allows sensor to keep running as long as conditions below are true
+    voltage = readVoltage(a, therm); %reads the voltage
+    temperature = (voltage - voltagezero) / temperaturecoefficient; %converts voltage to temp
+    currentTime = toc(startTime); % gives the elapsed time
+    results(index) = temperature; %stores the temperature into an array
+    timegraph(index) = currentTime; % stores the time into an arrayu
+    index = index + 1; %
 
-    addpoints(graph, currentTime, temperature);
-    drawnow limitrate;
+    addpoints(graph, currentTime, temperature); % adds a point to the live graph
+    drawnow limitrate; % updates the graph. limitrate allows teh graph to plot at an appropriate amount
 
-if temperature >= 18 && temperature <= 24
+if temperature >= 18 && temperature <= 24 % runs the code uunderneath if conditions met
 
-    writeDigitalPin(a, red, 0);
-    writeDigitalPin(a, yellow, 0);
-    writeDigitalPin(a, green, 1);
+    writeDigitalPin(a, red, 0);   %red off
+    writeDigitalPin(a, yellow, 0);%yellow off
+    writeDigitalPin(a, green, 1);%green on
     
-elseif temperature > 24
-    writeDigitalPin(a, green, 0);
-    writeDigitalPin(a, yellow, 0);
-    redblink = ~redblink;
-    writeDigitalPin(a, red, redblink);
+elseif temperature > 24 % runs code underneath if conditions met
+    writeDigitalPin(a, green, 0); %green opff
+    writeDigitalPin(a, yellow, 0);%yellow off
+    redblink = ~redblink; %this allows the red LED to be toggled on an off
+    writeDigitalPin(a, red, redblink); % this causes the red led to blink 
 
-elseif temperature < 18
-    writeDigitalPin(a, red, 0);
-    writeDigitalPin(a, green, 0);
-    yellowblink = ~yellowblink;
-    writeDigitalPin(a, yellow, yellowblink);
+elseif temperature < 18 % runs code underneath if conditions met
+    writeDigitalPin(a, red, 0);% red off
+    writeDigitalPin(a, green, 0);% rgreen  off
+    yellowblink = ~yellowblink; %this allows the yellow LED to be toggled on an off
+    writeDigitalPin(a, yellow, yellowblink); % this causes the yellow led to blink 
 
-else 
+else %turns off all LED
     writeDigitalPin(a, red, 0);
     writeDigitalPin(a, yellow, 0);
     writeDigitalPin(a, green, 0);
 end
 
-pause(1);
+pause(1); % waits one second
 
 
 end
